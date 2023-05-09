@@ -1,18 +1,15 @@
-import uvicorn
-from fastapi import FastAPI, status
 
-import service
-from schema import CreditCardSchema
+from fastapi import APIRouter, status
+
+from .service import validate_credit_card as credit_card_validator
+from .schema import CreditCardSchema
 
 
-app = FastAPI(
-    title="Credit Card Validation API",
-    description="API for fast validation of credit cards"
-)
+app = APIRouter(tags=["Credit Card"])
 
 
 @app.post(
-    "/credit-card/validate",
+    "/api/v1/credit-card/validate",
     status_code=status.HTTP_200_OK,
 )
 async def validate_credit_card(card_details: CreditCardSchema):
@@ -24,7 +21,7 @@ async def validate_credit_card(card_details: CreditCardSchema):
     -param cvv: exactly 3 digits long or 4 digits long for american express cards.
     """
 
-    await service.validate_credit_card(
+    await credit_card_validator(
         card_number=card_details.card_number,
         expiry_month=card_details.expiry_month,
         expiry_year=card_details.expiry_year,
@@ -32,7 +29,3 @@ async def validate_credit_card(card_details: CreditCardSchema):
     )
 
     return {"message": "Credit card validated successfully"}
-
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", port=7001)

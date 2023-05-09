@@ -9,7 +9,7 @@ then
     # run application
     source ./env/bin/activate
     pip install -r requirements.txt
-    python ./backend/main.py
+    python main.py
 else
     # create virtualenv
     # activate virtualenv
@@ -18,7 +18,7 @@ else
     python3 -m venv env
     source ./env/bin/activate
     pip install -r requirements.txt
-    python ./backend/main.py
+    python main.py
 fi
 
 

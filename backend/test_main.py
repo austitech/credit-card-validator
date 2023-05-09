@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi.testclient import TestClient
 
 from main import app
-from service import luhn_algorithm_validator
+from .service import luhn_algorithm_validator
 
 
 client = TestClient(app)
@@ -16,7 +16,7 @@ def test_valid_credit_card():
         "expiry_month": datetime.now().month + 1,
         "cvv": "737",
     }
-    response = client.post("/credit-card/validate", json=card_details)
+    response = client.post("/api/v1/credit-card/validate", json=card_details)
     assert response.status_code == 200
     assert response.json() == {"message": "Credit card validated successfully"}
 
@@ -28,7 +28,7 @@ def test_invalid_card_number_with_luhn_algorithm():
         "expiry_month": datetime.now().month + 1,
         "cvv": "737",
     }
-    response = client.post("/credit-card/validate", json=card_details)
+    response = client.post("/api/v1/credit-card/validate", json=card_details)
     assert response.status_code == 400
     assert response.json() == {"detail": "Card number failed luhn algorithm check"}
 
@@ -40,7 +40,7 @@ def test_expired_credit_card():
         "expiry_month": datetime.now().month,
         "cvv": "737",
     }
-    response = client.post("/credit-card/validate", json=card_details)
+    response = client.post("/api/v1/credit-card/validate", json=card_details)
     assert response.status_code == 400
     assert response.json() == {
         "detail": "Credit card expiration date is less than current time"
@@ -54,7 +54,7 @@ def test_card_number_too_long():
         "expiry_month": datetime.now().month + 1,
         "cvv": "737",
     }
-    response = client.post("/credit-card/validate", json=card_details)
+    response = client.post("/api/v1/credit-card/validate", json=card_details)
     assert len(card_details["card_number"]) > 19
     assert response.status_code == 400
     assert response.json() == {
@@ -69,7 +69,7 @@ def test_card_number_too_short():
         "expiry_month": datetime.now().month + 1,
         "cvv": "737",
     }
-    response = client.post("/credit-card/validate", json=card_details)
+    response = client.post("/api/v1/credit-card/validate", json=card_details)
     assert len(card_details["card_number"]) < 16
     assert response.status_code == 400
     assert response.json() == {
@@ -90,8 +90,8 @@ def test_invalid_cvv_for_american_express_card():
         "expiry_month": datetime.now().month + 1,
         "cvv": "737",
     }
-    response_1 = client.post("/credit-card/validate", json=card_details_1)
-    response_2 = client.post("/credit-card/validate", json=card_details_2)
+    response_1 = client.post("/api/v1/credit-card/validate", json=card_details_1)
+    response_2 = client.post("/api/v1/credit-card/validate", json=card_details_2)
 
     assert len(card_details_1["cvv"]) < 4
     assert len(card_details_2["cvv"]) < 4
@@ -112,7 +112,7 @@ def test_invalid_cvv_for_non_american_express_cards():
         "expiry_month": datetime.now().month + 1,
         "cvv": "73",
     }
-    response = client.post("/credit-card/validate", json=card_details)
+    response = client.post("/api/v1/credit-card/validate", json=card_details)
     assert len(card_details["cvv"]) < 3
     assert response.status_code == 400
     assert response.json() == {
