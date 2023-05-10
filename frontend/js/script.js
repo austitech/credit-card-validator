@@ -19,11 +19,13 @@ let inputValues = {
 // add event listeners to form input elements
 const inputOnChange = (elem, fieldName) => {
     elem.addEventListener("change", (e) => {
+        inputValues[fieldName] = e.target.value;
+    });
+    elem.addEventListener("focus", () => {
         statusElement.innerHTML = "Pending";
+        statusElement.classList.add("pending");
         statusElement.classList.remove("success");
         statusElement.classList.remove("failure")
-        statusElement.classList.add("pending");
-        inputValues[fieldName] = e.target.value;
     })
 };
 inputOnChange(cardNumberElement, "cardNumber");
