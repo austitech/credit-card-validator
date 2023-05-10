@@ -34,14 +34,14 @@ async def validate_credit_card(
 
     # Check that cvv is exactly 4 digits long for american express cards
     cvv_digits = len(cvv)
-    if card_number[:2] in ["34", "37"] and cvv_digits < 4:
+    if card_number[:2] in ["34", "37"] and cvv_digits != 4:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="CVV must be exactly 4 digits long for american express cards",
         )
 
     # Check that cvv is exactly 3 digits long for non american express cards
-    if card_number[:2] not in ["34", "37"] and cvv_digits < 3:
+    if card_number[:2] not in ["34", "37"] and cvv_digits != 3:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="CVV must be exactly 3 digits long for non american express cards",
