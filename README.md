@@ -2,7 +2,8 @@
 Application for validating credit cards quickly and efficiently.
 
 ## Requirements
-- Python v3.6+ (with Pip)
+- Python v3.6+ (with Pip)  
+If python3 is not installed on your PC [Click here to download and install it](https://www.python.org/downloads/)
 
 ## Installation / Running
 This application can be installed in two ways:
@@ -39,17 +40,10 @@ This application can be installed in two ways:
 - Open **http://127.0.0.1:7001/docs** on your browser to view the api documentation
 - Open **http://127.0.0.1:7001/app** on your browser to view the application
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Validation Criteria for credit cards
+- The expiry date of the credit card must be AFTER present time.
+- The CVV (security code) of the credit card must be exactly 3 digits long
+  - Unless it’s an American Express card, in which case the CVV must be exactly 4 digits long
+  - American Express are cards whose PAN (card numbers) starts with either “34” or “37”
+- Card number (PAN) must be between 16 and 19 inclusive.
+- Last digit of the PAN (card number) must be valid on check using Luhn’s algorithm.
