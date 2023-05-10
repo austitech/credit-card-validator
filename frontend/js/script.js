@@ -66,4 +66,7 @@ submitBtn.addEventListener("click", () => {
     .then((response) => {
         response.status === 200 ? onSuccess() : onFailure()
     })
+    .catch((err) => {
+        onFailure()
+    })
 })
