@@ -13,7 +13,6 @@ class CreditCardSchema(BaseModel):
         # try casting value to integer then fail on error
         # else return initial value
         try:
-            print(value, int(value.lstrip("0")))
             int(value.lstrip("0"))
         except:
             raise ValueError("Value must be digits")
